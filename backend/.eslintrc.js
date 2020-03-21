@@ -19,6 +19,9 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
-      "linebreak-style": ['warn', 'windows']
+      "linebreak-style": ['warn', 'windows'],
+      "require-jsdoc": ["off"],
+      "no-invalid-this": ["off"],
+      "max-len": ["error", { "code": 150 }]
     }
 };

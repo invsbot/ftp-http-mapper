@@ -1,6 +1,6 @@
 import React, { FormEvent, useState, ChangeEvent } from 'react';
 import { TextField, Button , Grid, List, Tabs, Tab, ListItem, ListItemText, Typography  }  from '@material-ui/core';
-import TabPanel from '../components/TabPanel';
+import TabPanel from '../../components/TabPanel';
 
 import * as H from 'history';
 

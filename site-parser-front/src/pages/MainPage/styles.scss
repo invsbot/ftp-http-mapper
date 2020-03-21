@@ -1,0 +1,10 @@
+.main-container {
+    display: flex;
+    .main-page__container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 150px;
+        align-self: center;
+    }
+}

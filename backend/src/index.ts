@@ -1,8 +1,8 @@
 import SiteMapper from './SiteMapper';
+import FtpClientTree from './FtpTreeCreator';
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
-
 
 const app = express();
 const port = 8080;
@@ -18,7 +18,7 @@ app.use(bodyParser.json(
 ));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(buildPath)));
-
+// app.use(cors());
 app.get( '/', async ( req, res ) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 } );
@@ -33,6 +33,24 @@ app.post('/mapper', async (req, res) => {
     const maxSizePage = pageMapper.getMaxSizePage();
     const minSizePage = pageMapper.getMinPageSize();
     res.json({urlArray, maxSizePage, minSizePage});
+  }
+  catch (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+});
+
+app.post('/ftpMapper', async (req, res) => {
+  const ip = req.body.ip as string;
+  // const port = Number(req.body.port);
+  const user = req.body.user as string;
+  const password = req.body.password as string;
+  try {
+    const ftpClient = new FtpClientTree(ip, 21);
+    await ftpClient.connect();
+    await ftpClient.login(user, password);
+    const response = await ftpClient.createFtpTree();
+    res.json({ftpTree: response});
   } catch (err) {
     console.log(err);
     res.status(500).send(err);

@@ -70,8 +70,8 @@ const FtpTreePage: React.FC<FTPTreePageProps> = () => {
 
         console.log('Test')
         try{
-            const response = await fetch('http://localhost:8080/ftpMapper', 
-            {   mode: 'no-cors', // no-cors, *cors, same-origin
+            const response = await fetch('http://127.0.0.1:8080/ftpMapper', 
+            {   mode: 'same-origin', // no-cors, *cors, same-origin
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"

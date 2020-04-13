@@ -3,8 +3,13 @@ import FtpClientTree from './FtpTreeCreator';
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
+import cors from 'cors';
+import MailSender from './MailSender';
+import {MailBody} from './types';
 
 const app = express();
+app.use(cors());
+app.options('*', cors());
 const port = 8080;
 const buildPath = path.join(
     __dirname,
@@ -14,12 +19,11 @@ const buildPath = path.join(
     'build' );
 
 app.use(bodyParser.json(
-    {type: ['application/json', 'text/plain']},
+    {type: ['application/json', 'text/plain'], limit: '50mb'},
 ));
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
 app.use(express.static(path.join(buildPath)));
-// app.use(cors());
-app.get( '/', async ( req, res ) => {
+app.get( '/*', async ( req, res ) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 } );
 
@@ -33,11 +37,10 @@ app.post('/mapper', async (req, res) => {
     const maxSizePage = pageMapper.getMaxSizePage();
     const minSizePage = pageMapper.getMinPageSize();
     res.json({urlArray, maxSizePage, minSizePage});
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
   }
-  catch (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
 });
 
 app.post('/ftpMapper', async (req, res) => {
@@ -54,6 +57,35 @@ app.post('/ftpMapper', async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
+  }
+});
+
+app.post('/mail-sender', async (req, res) => {
+  const {
+    host,
+    port,
+    user,
+    password,
+    attachments,
+    text,
+    email,
+    subject,
+  } = req.body as MailBody;
+
+  const sender = new MailSender(host, user, password, +port);
+  try {
+    const response = await sender.sendMail({
+      attachments: attachments && attachments
+          .map((attachemnt) => ({path: attachemnt.content, filename: attachemnt.fileName})),
+      to: email,
+      text,
+      subject,
+    });
+    res.json({success: response});
+    console.log(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({error: err});
   }
 });
 

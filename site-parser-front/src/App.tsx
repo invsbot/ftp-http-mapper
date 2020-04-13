@@ -1,16 +1,19 @@
 import React from 'react';
-import { Router, Switch, Route, BrowserRouter } from 'react-router-dom';
+import {
+  Router, Switch, Route, BrowserRouter,
+} from 'react-router-dom';
 import ParserPage from './pages/ParserPage';
 import './App.scss';
 import FtpTreePage from './pages/FtpTreePage';
 import MainPage from './pages/MainPage';
+import SendMailPage from './pages/SendMailPage';
 
 function App() {
   return (
     <div className="main-container">
       <BrowserRouter>
         <Switch>
-        <Route
+          <Route
             path="/mapper"
             render={(props) => <ParserPage {...props} />}
           />
@@ -19,8 +22,12 @@ function App() {
             render={(props) => <FtpTreePage {...props} />}
           />
           <Route
-            path='/'
-            render={(props) => <MainPage {...props}/>}
+            path="/mail-sender"
+            render={(props) => <SendMailPage {...props} />}
+          />
+          <Route
+            path="/"
+            render={(props) => <MainPage {...props} />}
           />
         </Switch>
       </BrowserRouter>

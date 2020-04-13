@@ -22,6 +22,7 @@ module.exports = {
       "linebreak-style": ['warn', 'windows'],
       "require-jsdoc": ["off"],
       "no-invalid-this": ["off"],
-      "max-len": ["error", { "code": 150 }]
+      "max-len": ["error", { "code": 150 }],
+      "no-unused-vars": ["warn"]
     }
 };

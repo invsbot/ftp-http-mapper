@@ -82,7 +82,6 @@ app.post('/mail-sender', async (req, res) => {
       subject,
     });
     res.json({success: response});
-    console.log(response);
   } catch (err) {
     console.log(err);
     res.status(500).json({error: err});

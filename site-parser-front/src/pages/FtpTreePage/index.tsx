@@ -31,7 +31,7 @@ export type DirectoryItem = {
 interface FTPTreePageProps {
     history: H.History;
 }
-const resp = {"ftpTree":[{"type":"d","perms":"rwxr-xr-x","items":2,"owner":"1228","group":"1000","size":4096,"date":"Nov 24 13:01","name":".log"},{"type":"d","perms":"rwxrw----","items":3,"owner":"1228","group":"1000","size":4096,"date":"Dec 12 10:24","name":"TEST","data":[{"type":"d","perms":"rwxr-xr-x","items":2,"owner":"1228","group":"1000","size":4096,"date":"Dec 12 10:24","name":"newfolder"}]},{"type":"d","perms":"rwxr-x---","items":4,"owner":"1227","group":"1000","size":4096,"date":"Dec 07  2016","name":"htdocs","data":[{"type":"d","perms":"rwxr-xr-x","items":2,"owner":"1227","group":"1000","size":4096,"date":"Nov 22  2016","name":"123"},{"type":"d","perms":"rwxr-xr--","items":2,"owner":"1227","group":"1000","size":4096,"date":"Dec 07  2016","name":"qwerty"}]},{"type":"d","perms":"r-xr-xr--","items":2,"owner":"1227","group":"1000","size":4096,"date":"Dec 21  2016","name":"test.test"},{"type":"d","perms":"rwxr-x---","items":2,"owner":"1227","group":"1000","size":4096,"date":"Nov 21  2016","name":"tmp"}]}
+// const resp = {"ftpTree":[{"type":"d","perms":"rwxr-xr-x","items":2,"owner":"1228","group":"1000","size":4096,"date":"Nov 24 13:01","name":".log"},{"type":"d","perms":"rwxrw----","items":3,"owner":"1228","group":"1000","size":4096,"date":"Dec 12 10:24","name":"TEST","data":[{"type":"d","perms":"rwxr-xr-x","items":2,"owner":"1228","group":"1000","size":4096,"date":"Dec 12 10:24","name":"newfolder"}]},{"type":"d","perms":"rwxr-x---","items":4,"owner":"1227","group":"1000","size":4096,"date":"Dec 07  2016","name":"htdocs","data":[{"type":"d","perms":"rwxr-xr-x","items":2,"owner":"1227","group":"1000","size":4096,"date":"Nov 22  2016","name":"123"},{"type":"d","perms":"rwxr-xr--","items":2,"owner":"1227","group":"1000","size":4096,"date":"Dec 07  2016","name":"qwerty"}]},{"type":"d","perms":"r-xr-xr--","items":2,"owner":"1227","group":"1000","size":4096,"date":"Dec 21  2016","name":"test.test"},{"type":"d","perms":"rwxr-x---","items":2,"owner":"1227","group":"1000","size":4096,"date":"Nov 21  2016","name":"tmp"}]}
 type FormParamsType = {
     [key: string]: string;
 }
@@ -70,7 +70,7 @@ const FtpTreePage: React.FC<FTPTreePageProps> = () => {
 
         console.log('Test')
         try{
-            const response = await fetch('http://127.0.0.1:8080/ftpMapper', 
+            const response = await fetch('/ftpMapper', 
             {   mode: 'same-origin', // no-cors, *cors, same-origin
                 method: 'POST',
                 headers: {
@@ -78,8 +78,8 @@ const FtpTreePage: React.FC<FTPTreePageProps> = () => {
                 },
                 body: JSON.stringify(formParams)
             });
-            // const json = await response.json();
-            setTreeData(await convertFtpTreeItems(resp?.ftpTree as any));
+            const json = await response.json();
+            setTreeData(await convertFtpTreeItems(json?.ftpTree as any));
         }
         catch(err) {
             console.log(err);
